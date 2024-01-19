@@ -1,3 +1,4 @@
+//Logic for calculator ---------------------------------------------------------
 //Operators
 function add(a, b) {
     return a + b;
@@ -20,29 +21,43 @@ function operate(operator, num1, num2) {
     return operator(num1, num2)
 }
 
-// Display
+// Display ---------------------------------------------------------------------
 const display = document.querySelector('.display');
 let displayValue = '';
 display.textContent = displayValue;
 
-// Numbers
+// Numbers ---------------------------------------------------------------------
 const numbers = document.querySelectorAll('.btn-number');
 numbers.forEach(number => number.addEventListener('click', () => {
     displayValue += number.textContent;
     display.textContent = displayValue;
+
+    // Disable operators if displayValue contains an operator
+    if (displayValue.includes('+') || displayValue.includes('-') || displayValue.includes('X') || displayValue.includes('/')) {
+        operators.forEach(operator => operator.disabled = true);
+    } else {
+        operators.forEach(operator => operator.disabled = false);
+    }
 }))
 
-// Operators
+// Operators ---------------------------------------------------------------------
 const operators = document.querySelectorAll('.btn-operator');
-operators.forEach(operator => operator.addEventListener('click', () => {
+operators.forEach(operator => operator.addEventListener('click', function displayOperator() {
     displayValue += ` ${operator.textContent} `;
     display.textContent = displayValue;
+
+    // Disable operators if displayValue contains an operator
+    operators.forEach(operator => operator.disabled = true);
 }))
 
-// Clear
+
+// Clear -------------------------------------------------------------------------
 const clear = document.querySelector('.btn-clear');
 clear.addEventListener('click', () => {
     displayValue = '';
     display.textContent = displayValue;
+
+    // Disable operators from displaying at start
+    operators.forEach(operator => operator.disabled = true);
 })
 
