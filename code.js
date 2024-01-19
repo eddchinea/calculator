@@ -61,3 +61,42 @@ clear.addEventListener('click', () => {
     operators.forEach(operator => operator.disabled = true);
 })
 
+// Equals -----------------------------------------------------------------------
+const equals = document.querySelector('.btn-equals');
+equals.addEventListener('click', () => {
+    const displayArray = displayValue.split(' ');
+
+    // Get operator from display
+    let displayedOperator = displayArray[1];
+    let operator = '';
+    switch (displayedOperator) {
+        case '+':
+            operator = add;
+            break;
+    
+        case '-':
+            operator = subtract;
+            break;
+
+        case 'X':
+            operator = multiply;
+            break;
+        
+        case '/':
+            operator = divide;
+            break;
+    }
+
+    // Calculate result
+    const num1 = Number(displayArray[0]);
+    const num2 = Number(displayArray[2]);
+    const result = operate(operator, num1, num2);
+
+    // Display result
+    displayValue = result;
+    display.textContent = displayValue;
+
+    // Enable operators
+    operators.forEach(operator => operator.disabled = false);
+})
+
