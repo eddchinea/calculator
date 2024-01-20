@@ -32,23 +32,24 @@ numbers.forEach(number => number.addEventListener('click', () => {
     displayValue += number.textContent;
     display.textContent = displayValue;
 
-    // Disable operators if displayValue contains an operator
-    if (displayValue.includes('+') || displayValue.includes('-') || displayValue.includes('X') || displayValue.includes('/')) {
-        operators.forEach(operator => operator.disabled = true);
-    } else {
-        operators.forEach(operator => operator.disabled = false);
-    }
+    operators.forEach(operator => operator.disabled = false);
 }))
 
 // Operators ---------------------------------------------------------------------
 const operators = document.querySelectorAll('.btn-operator');
 operators.forEach(operator => operator.addEventListener('click', function displayOperator() {
+
+    if (displayValue.split(' ').length === 3) {
+        calculate();
+    }
+
     displayValue += ` ${operator.textContent} `;
     display.textContent = displayValue;
 
     // Disable operators if displayValue contains an operator
     operators.forEach(operator => operator.disabled = true);
 }))
+
 
 
 // Clear -------------------------------------------------------------------------
@@ -61,9 +62,8 @@ clear.addEventListener('click', () => {
     operators.forEach(operator => operator.disabled = true);
 })
 
-// Equals -----------------------------------------------------------------------
-const equals = document.querySelector('.btn-equals');
-equals.addEventListener('click', () => {
+// Calculate ---------------------------------------------------------------------
+function calculate() {
     const displayArray = displayValue.split(' ');
 
     // Get operator from display
@@ -93,10 +93,14 @@ equals.addEventListener('click', () => {
     const result = operate(operator, num1, num2);
 
     // Display result
-    displayValue = result;
+    displayValue = result.toString();
     display.textContent = displayValue;
 
     // Enable operators
     operators.forEach(operator => operator.disabled = false);
-})
+}
+
+// Equals -----------------------------------------------------------------------
+const equals = document.querySelector('.btn-equals');
+equals.addEventListener('click', calculate)
 
