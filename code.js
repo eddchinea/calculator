@@ -39,6 +39,11 @@ numbers.forEach(number => number.addEventListener('click', () => {
 const operators = document.querySelectorAll('.btn-operator');
 operators.forEach(operator => operator.addEventListener('click', function displayOperator() {
 
+    // Prevent multiple operators
+    if (displayValue === '') {
+        return;
+    }
+
     if (displayValue.split(' ').length === 3) {
         calculate();
     }
@@ -66,6 +71,13 @@ clear.addEventListener('click', () => {
 function calculate() {
     const displayArray = displayValue.split(' ');
 
+    if (displayArray[2] === '' || displayArray.length === 1) {
+        displayValue = displayArray[0];
+        display.textContent = displayValue;
+        operators.forEach(operator => operator.disabled = false);
+        return displayValue;
+    }
+
     // Get operator from display
     let displayedOperator = displayArray[1];
     let operator = '';
@@ -87,9 +99,18 @@ function calculate() {
             break;
     }
 
-    // Calculate result
+    // Get numbers from display
     const num1 = Number(displayArray[0]);
     const num2 = Number(displayArray[2]);
+
+    if (operator === divide && num2 === 0) {
+        alert('You cannot divide by 0');
+        displayValue = '';
+        display.textContent = displayValue;;
+        return displayValue;
+    }
+
+    // Calculate result
     const result = operate(operator, num1, num2);
 
     // Display result
@@ -98,6 +119,7 @@ function calculate() {
 
     // Enable operators
     operators.forEach(operator => operator.disabled = false);
+    return result
 }
 
 // Equals -----------------------------------------------------------------------
